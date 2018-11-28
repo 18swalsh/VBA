@@ -1,6 +1,8 @@
 '02035
 Option Explicit
 
+'imports a txt file of the user's choice
+
 Sub import_txt_file()
 
 Dim txt As String
