@@ -1,0 +1,29 @@
+'02035
+Option Explicit
+
+Sub import_txt_file()
+
+Dim txt As String
+Dim txt_pick As Office.FileDialog
+
+MsgBox ("Please select text file")
+Set txt_pick = Application.FileDialog(msoFileDialogFilePicker)
+With txt_pick
+    .AllowMultiSelect = False
+    .Title = "Please select ZSPPET_RE_INST text file"
+    .Filters.Clear
+    .Filters.Add "TEXT", "*.txt"
+    
+    If .Show = True Then
+        txt = .SelectedItems(1)
+    End If
+End With
+
+If txt_pick.SelectedItems.Count = 0 Then
+    MsgBox ("No file selected")
+    Exit Sub
+End If
+
+MsgBox ("Selected file: " & txt)
+
+End Sub
