@@ -3,6 +3,8 @@ Option Explicit
 
 Sub import_excel_file()
 
+'imports an excel file of the user's choice
+
 Dim xl As String
 Dim xl_pick As Office.FileDialog
 
