@@ -1,23 +1,54 @@
+'02035
+Option Explicit
+
 Sub copier()
 
-Dim i As Integer, nRows As Integer
+'function
+' - copies each subsequent specified number of rows in a table
+' - the last group of rows copied will be the remaining # of rows
+'   i.e. if there are 450 rows, and rows_per_copy is set to 80,
+'        the rows will be copied in the following manner:
+'        1-80, 81-160, 161-240, 241-320, 321-400, 301-450
+
+'required
+' - rows_per_copy
+
+'assumptions
+' - Data (not including headers) starts in cell A1
+' - Every row in column A has data
+
+'misc
+' - numeric variables are dimensioned as Long
+'   (may be changed to Integer)
+
+Dim i As Long, nRows As Long, nCols As Long
+Dim rows_per_copy As Long
 Dim ws As Worksheet
+Dim first_cell As Range
+Dim bool As Boolean: bool = True
 
-Set ws = Sheets("Installation Load File")
-nRows = Range("A2").End(xlDown).Row
+On Error GoTo Xit
+Set first_cell = Application.InputBox("Select the top-left *data* cell of a table (not the first column header)", "First Cell Selection", Type:=8)
 
-With ws
+nRows = first_cell.CurrentRegion.Rows.Count
+nCols = first_cell.CurrentRegion.Columns.Count
 
-For i = 2 To nRows Step 26
-    If nRows - i > 26 Then
-        Range(.Range("A" & i), .Range("I" & i + 25)).Copy
-        MsgBox ("Rows " & i & " to " & i + 25 & " copied, click 'OK' to copy the next 25")
+If nRows = 1 Then Exit Sub
+
+rows_per_copy = 10
+
+For i = 1 To nRows Step rows_per_copy
+    If nRows - i > rows_per_copy + 1 Then
+        Range(first_cell.Offset(i - 1, 0), Cells(i - 1 + rows_per_copy, nCols)).Copy
+        If MsgBox("Rows " & i & " to " & i - 1 + rows_per_copy & " copied, click 'OK' to copy the next " & rows_per_copy, vbOKCancel) = vbCancel Then: bool = False
+        If bool = False Then: Exit Sub
     Else
-        Range(.Range("A" & i), .Range("I" & nRows)).Copy
+        Range(first_cell.Offset(i - 1, 0), Cells(nRows, nCols)).Copy
         MsgBox ("Rows " & i & " to " & nRows & " copied, click 'OK' to Exit")
     End If
 Next
-    
-End With
+
+Xit:
+    Exit Sub
 
 End Sub
