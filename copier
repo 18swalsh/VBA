@@ -1,0 +1,23 @@
+Sub copier()
+
+Dim i As Integer, nRows As Integer
+Dim ws As Worksheet
+
+Set ws = Sheets("Installation Load File")
+nRows = Range("A2").End(xlDown).Row
+
+With ws
+
+For i = 2 To nRows Step 26
+    If nRows - i > 26 Then
+        Range(.Range("A" & i), .Range("I" & i + 25)).Copy
+        MsgBox ("Rows " & i & " to " & i + 25 & " copied, click 'OK' to copy the next 25")
+    Else
+        Range(.Range("A" & i), .Range("I" & nRows)).Copy
+        MsgBox ("Rows " & i & " to " & nRows & " copied, click 'OK' to Exit")
+    End If
+Next
+    
+End With
+
+End Sub
