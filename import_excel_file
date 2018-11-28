@@ -1,0 +1,29 @@
+'02035
+Option Explicit
+
+Sub import_excel_file()
+
+Dim xl As String
+Dim xl_pick As Office.FileDialog
+
+MsgBox ("Please select Excel file")
+Set xl_pick = Application.FileDialog(msoFileDialogFilePicker)
+With xl_pick
+    .AllowMultiSelect = False
+    .Title = "Please select Excel file"
+    .Filters.Clear
+    .Filters.Add "Excel", "*.xls*"
+    
+    If .Show = True Then
+        xl = .SelectedItems(1)
+    End If
+End With
+
+If xl_pick.SelectedItems.Count = 0 Then
+    MsgBox ("No file selected")
+    Exit Sub
+End If
+
+MsgBox ("Selected file: " & xl)
+
+End Sub
