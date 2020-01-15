@@ -1,0 +1,23 @@
+'02035
+Option Explicit
+Sub extract_duplicates()
+Dim i As Long, j As Long, k As Long
+Dim arr As Variant
+Dim arrRes() As Variant
+Dim adCol As Integer
+ReDim arrRes(0)
+adCol = InputBox("Which column is the address data in? (enter a number)", "Address Column")
+arr = ActiveCell.CurrentRegion.Value
+For i = UBound(arr) To 1 Step -1
+    For j = 1 To i - 1 Step 1
+        If arr(i, adCol) = arr(j, adCol) Then
+            ReDim Preserve arrRes(UBound(arrRes) + 1)
+            arrRes(k) = arr(i, 1)
+            k = k + 1
+            Exit For
+        End If
+        
+    Next j
+Next i
+    ActiveCell.CurrentRegion.AutoFilter Field:=1, Criteria1:=arrRes, Operator:=xlFilterValues
+End Sub  
